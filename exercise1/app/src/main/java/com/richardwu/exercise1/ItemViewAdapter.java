@@ -7,13 +7,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     private List<String> mItems;
 
     public ItemViewAdapter(List<String> items) {
-        mItems = items;
+        mItems = new ArrayList<>();
+//        mItems = items; //赋值可以理解为指针赋值，是内存空间的直接复用，这样的话就会导致清空mItems的时候将主窗口的items也清空了
+        mItems.addAll(items);
     }
     //创建ViewHolder实例,并把加载的布局传入到构造函数去,再把ViewHolder实例返回。
     @NonNull
@@ -33,5 +36,13 @@ public class ItemViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    //自定义方法：按照传入的筛选准则更改mItems并通知
+    public void dataChangedHandler(List<String> newItems) {
+        mItems.clear();
+//        mItems = newItems;
+        mItems.addAll(newItems);
+        notifyDataSetChanged();
     }
 }

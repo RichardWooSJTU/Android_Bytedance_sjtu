@@ -37,10 +37,21 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);//初始化一个布局管理器
         recyclerView.setLayoutManager(linearLayoutManager);//设置布局管理器
-        Log.d("Main", "finish layout manager");
         ItemViewAdapter itemViewAdapter = new ItemViewAdapter(items);//初始化一个适配器
         recyclerView.setAdapter(itemViewAdapter);//设置适配器
-        Log.d("Main", "finish View Adaptor ");
+
+        searchLayout.setOnEditSearchViewListener(new SearchLayout.OnEditSearchViewListener() {
+            @Override
+            public void afterChanged(String text) {
+                List<String> tmpItemLists = new ArrayList<>();
+                for (String item : items) {
+                    if (item.contains(text)) {
+                        tmpItemLists.add(item);
+                    }
+                }
+                itemViewAdapter.dataChangedHandler(tmpItemLists);
+            }
+        });
     }
 
     private void initItems() {
